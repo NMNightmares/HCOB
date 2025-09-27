@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,12 @@ public class car_move : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float steering = 2.5f;
     [SerializeField] private float driftFactor = 0.95f;
-    [SerializeField] private float drag = 0.1f; // smaller value, applied smoothly
+    [SerializeField] private float drag = 0.1f;
+
+    [Header("Speed Boost Settings")]
+    private float baseMaxSpeed; // Store original max speed
+    private float currentSpeedMultiplier = 1f;
+    private Coroutine speedBoostCoroutine;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
@@ -19,13 +24,12 @@ public class car_move : MonoBehaviour
 
     void Awake()
     {
-        // Smooth out movement between physics frames
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        baseMaxSpeed = maxSpeed; // Store the original max speed
     }
 
     void Update()
     {
-        // Get input
         steeringInput = Input.GetAxis("Horizontal");
         accelerationInput = Input.GetAxis("Vertical");
     }
@@ -39,40 +43,68 @@ public class car_move : MonoBehaviour
 
     void ApplyEngineForce()
     {
-        // Calculate forward movement
         Vector2 forward = transform.up;
         float currentSpeed = Vector2.Dot(rb.velocity, forward);
 
-        // Limit speed
-        if (accelerationInput > 0 && currentSpeed >= maxSpeed) return;
-        if (accelerationInput < 0 && currentSpeed <= -maxSpeed / 2f) return;
+        // Use boosted max speed
+        float currentMaxSpeed = baseMaxSpeed * currentSpeedMultiplier;
 
-        // Apply acceleration force
+        if (accelerationInput > 0 && currentSpeed >= currentMaxSpeed) return;
+        if (accelerationInput < 0 && currentSpeed <= -currentMaxSpeed / 2f) return;
+
         Vector2 force = forward * accelerationInput * acceleration;
         rb.AddForce(force, ForceMode2D.Force);
-
-        // Apply drag smoothly (instead of multiplying velocity directly)
         rb.velocity = rb.velocity * (1f - drag * Time.fixedDeltaTime);
     }
 
     void ApplySteering()
     {
-        // Rotate based on input and current speed
-        float speedFactor = Mathf.Clamp01(rb.velocity.magnitude / maxSpeed);
+        float currentMaxSpeed = baseMaxSpeed * currentSpeedMultiplier;
+        float speedFactor = Mathf.Clamp01(rb.velocity.magnitude / currentMaxSpeed);
         float rotationAmount = steeringInput * steering * speedFactor;
         rb.MoveRotation(rb.rotation - rotationAmount);
     }
 
     void KillOrthogonalVelocity()
     {
-        // Remove sideways velocity (simulate grip vs. drift)
         Vector2 forward = transform.up;
         Vector2 right = transform.right;
-
         float forwardVelocity = Vector2.Dot(rb.velocity, forward);
         float sidewaysVelocity = Vector2.Dot(rb.velocity, right);
-
         Vector2 newVelocity = forward * forwardVelocity + right * sidewaysVelocity * driftFactor;
         rb.velocity = newVelocity;
+    }
+
+    // Speed boost methods
+    public void ApplySpeedBoost(float multiplier, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
+
+        speedBoostCoroutine = StartCoroutine(SpeedBoostCoroutine(multiplier, duration));
+        Debug.Log($"🌶️ Speed boost applied! Multiplier: {multiplier}x for {duration} seconds");
+    }
+
+    private IEnumerator SpeedBoostCoroutine(float multiplier, float duration)
+    {
+        currentSpeedMultiplier = multiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        currentSpeedMultiplier = 1f;
+        speedBoostCoroutine = null;
+        Debug.Log("Speed boost ended - back to normal speed");
+    }
+
+    public bool IsBoosted()
+    {
+        return currentSpeedMultiplier > 1f;
+    }
+
+    public float GetSpeedMultiplier()
+    {
+        return currentSpeedMultiplier;
     }
 }
