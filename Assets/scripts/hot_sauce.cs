@@ -57,7 +57,7 @@ public class hot_sauce : MonoBehaviour
             PlaySpicyEffects();
 
             // Notify the spawner that this bottle was collected
-            HotSauceSpawner.Instance?.OnBottleCollected();
+            //HotSauceSpawner.Instance?.OnBottleCollected();
 
             // Destroy the bottle
             Destroy(gameObject);
