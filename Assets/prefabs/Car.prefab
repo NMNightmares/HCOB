@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1950387153594762162}
   - component: {fileID: 1950387153594762125}
   - component: {fileID: 1950387153594762124}
+  - component: {fileID: -6247656241136462199}
   m_Layer: 3
   m_Name: Car
   m_TagString: Untagged
@@ -141,7 +142,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950387153594762127}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 465cba158f45e2944bb335a4172d5831, type: 3}
   m_Name: 
@@ -152,3 +153,19 @@ MonoBehaviour:
   driftFactor: 0.95
   drag: 0.98
   rb: {fileID: 0}
+--- !u!114 &-6247656241136462199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950387153594762127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff17e054451f8b42a5b945bcdafbb57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 1950387153594762125}
+  baseMaxSpeed: 10
+  maxSpeed: 10
+  steeringSpeed: 200
