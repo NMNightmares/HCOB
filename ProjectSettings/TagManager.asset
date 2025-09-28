@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Objects
+  - 
   - Water
   - UI
   - 
@@ -43,6 +43,15 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Park
+    uniqueID: 2673093509
+    locked: 0
+  - name: Road
+    uniqueID: 1475908725
+    locked: 0
+  - name: Car
+    uniqueID: 1009108435
     locked: 0
   - name: Objects
     uniqueID: 4068929383
