@@ -9,26 +9,29 @@ public class car_move_2 : MonoBehaviour
     [SerializeField] private float maxSpeed = 20f;
     [SerializeField] private float steeringSpeed = 3000f;
     [SerializeField] private float deceleration = 5f;
+    [SerializeField] private float dragAmount = 10f;
+    [SerializeField] private float tireGrip = 0.8f;
     
     private float steeringInput;
     private float accelerationInput;
     private Coroutine speedBoostCoroutine;
     private float currentSpeedMultiplier = 1f;
     
-    // Start is called before the first frame update
-    [SerializeField] private float dragAmount = 10f; // Realistic drag value
-    [SerializeField] private float tireGrip = 0.8f; // Adjust in inspector
 
     void Awake()
     {
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-        rb.drag = dragAmount; // Set the rigidbody's drag
+        
+        // Setting drag
+        rb.drag = dragAmount; 
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        // Applying A & D and <- & -> for horizontal movement
         steeringInput = Input.GetAxis("Horizontal");
+        
+        // Applying W & S and ^ & ? lol for horizontal movement
         accelerationInput = Input.GetAxis("Vertical");
     }
 
@@ -36,16 +39,15 @@ public class car_move_2 : MonoBehaviour
     {
         if (accelerationInput != 0)
         {
-            // Add force to build up velocity gradually
+            // "Gas pedal"
             rb.AddForce(transform.up * accelerationInput * maxSpeed * 2f);
         
-            // Cap the max speed
+            // TODO - adjust max speed & apply hot sauce modifier
             if (rb.velocity.magnitude > maxSpeed)
             {
                 rb.velocity = rb.velocity.normalized * maxSpeed;
             }
         }
-        // No else block - let momentum carry naturally
 
         ApplySteering();
         KillOrthogonalVelocity();
@@ -60,6 +62,10 @@ public class car_move_2 : MonoBehaviour
             transform.Rotate(0, 0, -steeringAmount);
         }
     }
+    
+    /**
+     * AI orthogonal velocity because I don't understand it well enough
+     */
     void KillOrthogonalVelocity()
     {
         Vector2 forwardVelocity = Vector2.Dot(rb.velocity, transform.up) * transform.up;
@@ -75,6 +81,10 @@ public class car_move_2 : MonoBehaviour
         rb.velocity = forwardVelocity + sidewaysVelocity * (1f - currentGrip);
     }
     
+    /**
+     * Copied Chris's speed boost routine
+     * MAY NEED TO FIX!
+     */
     public void ApplySpeedBoost(float multiplier, float duration)
     {
         if (speedBoostCoroutine != null)
@@ -94,11 +104,13 @@ public class car_move_2 : MonoBehaviour
         speedBoostCoroutine = null;  // Clear the reference
     }
     
+    // Boolean for UI
     public bool IsBoosted()
     {
         return currentSpeedMultiplier > 1f;
     }
     
+    // Speed Multiplier for UI
     public float GetSpeedMultiplier()
     {
         return currentSpeedMultiplier;
