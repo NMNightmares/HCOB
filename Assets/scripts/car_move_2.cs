@@ -5,12 +5,13 @@ using UnityEngine;
 public class car_move_2 : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float baseMaxSpeed = 20f;
-    [SerializeField] private float maxSpeed = 20f;
-    [SerializeField] private float steeringSpeed = 3000f;
+    [SerializeField] private float baseMaxSpeed = 50f;
+    [SerializeField] private float maxSpeed = 50f;
+    [SerializeField] private float steeringSpeed = 150f;
     [SerializeField] private float deceleration = 5f;
-    [SerializeField] private float dragAmount = 10f;
-    [SerializeField] private float tireGrip = 0.8f;
+    [SerializeField] private float dragAmount = 0.1f;
+    [SerializeField] private float tireGrip = 0.95f;
+    [SerializeField] private float accelerationForce = 20f;
     
     private float steeringInput;
     private float accelerationInput;
@@ -37,10 +38,16 @@ public class car_move_2 : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (accelerationInput == 0)
+        {
+            // Passive slowdown when no throttle
+            rb.velocity = Vector2.Lerp(rb.velocity, Vector2.zero, (deceleration / 4) * Time.fixedDeltaTime);
+        }
+        
         if (accelerationInput != 0)
         {
             // "Gas pedal"
-            rb.AddForce(transform.up * accelerationInput * maxSpeed * 2f);
+            rb.AddForce(transform.up * accelerationInput * accelerationForce);
         
             // TODO - adjust max speed & apply hot sauce modifier
             if (rb.velocity.magnitude > maxSpeed)
@@ -71,14 +78,11 @@ public class car_move_2 : MonoBehaviour
         Vector2 forwardVelocity = Vector2.Dot(rb.velocity, transform.up) * transform.up;
         Vector2 sidewaysVelocity = rb.velocity - forwardVelocity;
 
-        // Reduce grip during hard turns for sharper angles
-        float currentGrip = tireGrip;
-        if (Mathf.Abs(steeringInput) > 0.7f)
-        {
-            currentGrip *= 0.5f; // Less grip = sharper turns
-        }
-    
-        rb.velocity = forwardVelocity + sidewaysVelocity * (1f - currentGrip);
+        // Grip should be a slow decay, not a hard snap.
+        float grip = Mathf.Abs(steeringInput) > 0.1f ? tireGrip : 0.02f;
+
+        // Apply only a fraction of correction each physics step
+        rb.velocity = forwardVelocity + Vector2.Lerp(sidewaysVelocity, Vector2.zero, grip * Time.fixedDeltaTime);
     }
     
     /**
