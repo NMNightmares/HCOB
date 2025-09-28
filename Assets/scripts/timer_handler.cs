@@ -6,53 +6,51 @@ using TMPro;
 
 public class timer_handler : MonoBehaviour
 {
-    [SerializeField] private float timeRemaining;
-    [SerializeField] TextMeshProUGUI timerText;
-    private bool timerIsRunning = false;
-    
+    public Slider timerSlider;
+    [SerializeField] private float duration;
+
+    private float remaining;
+    private bool isRunning = false;
+    [SerializeField] private Gradient coolingGradient;
+
+    [SerializeField] private Image fillImage;
+
     void Start()
     {
-        timerIsRunning = true;
+        StartTimer();
     }
 
-    //TODO Add in .000 to timer
-    
-    /// <summary>
-    /// Converts the time to minutes and seconds. Displays them in the format (00:00)
-    /// </summary>
-    /// <param name="timeToDisplay">The amount of time in seconds to be displayed</param>
-    /// <returns>None</returns>
-        void DisplayTime(float timeToDisplay)
-        {
-            float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-            float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-
-            if (minutes == 0)
-            {
-                
-            }
-            
-            timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-        
-        /// <summary>
-        ///  Updates the value of the timer every tick
-        /// </summary>
-        /// <returns></returns>
     void Update()
     {
-        if (timerIsRunning)
+        if (isRunning)
         {
-            DisplayTime(timeRemaining);
-            if (timeRemaining > 0)
+            remaining -= Time.deltaTime;
+            if (remaining <= 0)
             {
-                timeRemaining -= Time.deltaTime;
+                remaining = 0;
+                isRunning = false;
+                OnTimerEnd();
             }
-            else
-            {
-                timeRemaining = 0;
-                timerIsRunning = false;
-            }
+            timerSlider.value = remaining;
+            Color blue = new Color(0.6f, 1f, 1f);
+            Color red = new Color(1f, 0f, 0f);
+            Color orange = new Color(1f, 0.5f, 0f);
+            float normalTime = remaining / duration;
+            fillImage.color = coolingGradient.Evaluate(1f - normalTime);
         }
     }
+
+    public void StartTimer()
+    {
+        remaining = duration;
+        timerSlider.maxValue = duration;
+        timerSlider.value = duration;
+        isRunning = true;
+    }
+
+    private void OnTimerEnd()
+    {
+        Debug.Log("Timer Finished!");
+    }
+    
 }
