@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Delivery_Quest : MonoBehaviour
 {
    [Header("Delivery Setup")]
     public Transform chickenShop;        // The restaurant/pickup location
-    public Transform deliveryHouse;      // Single house to deliver to
+    public List<Transform> deliveryHouses;      // List of houses to deliver to
     public GameObject chickenOrder;      // The chicken package
     public Transform car;                // Your car
+
+    private int currentDeliveryIndex = 0;
     
     [Header("Quest Display")]
     public Text questText;               // UI text element to update
@@ -34,6 +37,8 @@ public class Delivery_Quest : MonoBehaviour
         
         // Test if text updates work
         Debug.Log("Quest started - checking if text updates...");
+        currentDeliveryIndex = 0;
+
     }
     
     void Update()
@@ -45,12 +50,12 @@ public class Delivery_Quest : MonoBehaviour
         
         if (distanceToTarget <= deliveryDistance)
         {
-            if (!hasChicken)
+            if (!hasChicken && CurrentTarget == chickenShop.position)
             {
                 // At chicken shop - pick up
                 PickupChicken();
             }
-            else
+            else if (hasChicken && CurrentTarget == deliveryHouses[currentDeliveryIndex].position)
             {
                 // At house - deliver
                 DeliverChicken();
@@ -60,6 +65,15 @@ public class Delivery_Quest : MonoBehaviour
     
     void PickupChicken()
     {
+        if (currentDeliveryIndex >= deliveryHouses.Count)
+        {
+            return;
+        }
+
+        if (hasChicken)
+        {
+            UpdateQuestText("Order already in car!");
+        }
         // Attach chicken to car
         if (chickenOrder != null)
         {
@@ -68,8 +82,8 @@ public class Delivery_Quest : MonoBehaviour
         }
         
         hasChicken = true;
-        CurrentTarget = deliveryHouse.position;
-        UpdateQuestText("Deliver chicken to house");
+        CurrentTarget = deliveryHouses[currentDeliveryIndex].position;
+        UpdateQuestText($"Deliver chicken to house {currentDeliveryIndex + 1} of {deliveryHouses.Count}");
     }
     
     void DeliverChicken()
@@ -78,12 +92,25 @@ public class Delivery_Quest : MonoBehaviour
         if (chickenOrder != null)
         {
             chickenOrder.transform.SetParent(null);
-            chickenOrder.transform.position = deliveryHouse.position + Vector3.up;
+            chickenOrder.transform.position = deliveryHouses[currentDeliveryIndex].position + Vector3.up;
         }
-        
-        questComplete = true;
-        IsQuestActive = false;
-        UpdateQuestText("Delivery Complete!");
+
+        currentDeliveryIndex++;
+        hasChicken = false;
+
+        if (currentDeliveryIndex < deliveryHouses.Count)
+        {
+            CurrentTarget = chickenShop.position;
+            UpdateQuestText($"Return to Chicken Shop for order {currentDeliveryIndex+1}");
+        }
+        else
+        {
+            questComplete = true;
+            IsQuestActive = false;
+            UpdateQuestText("All Deliveries Complete!");
+            SceneManager.LoadScene("MainMenu");
+        }
+
     }
     
     void UpdateQuestText(string message)

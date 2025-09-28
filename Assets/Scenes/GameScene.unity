@@ -451,6 +451,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2790043407780945481, guid: ad08e57f013358944b847d0242663b61, type: 3}
   m_PrefabInstance: {fileID: 2790043407036352842}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1135293696 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7637139564225981231, guid: 16ef75c6ff6cf4f4199058a7dad9ecac, type: 3}
+  m_PrefabInstance: {fileID: 1358782591}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1214526914 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9082376430365266221, guid: 719701d9611f8e24fa73566c6ff1da3a, type: 3}
@@ -488,7 +493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chickenShop: {fileID: 1982934305}
-  deliveryHouse: {fileID: 1507721726}
+  deliveryHouses: []
   chickenOrder: {fileID: 0}
   car: {fileID: 1387483322}
   questText: {fileID: 1304738725}
@@ -821,7 +826,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1359437123}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 465cba158f45e2944bb335a4172d5831, type: 3}
   m_Name: 
@@ -3216,11 +3221,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2180601353719079357, guid: 2f30159288a5d2b4c901b9e4c0906d19, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -80
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 2180601353719079357, guid: 2f30159288a5d2b4c901b9e4c0906d19, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 2180601353719079357, guid: 2f30159288a5d2b4c901b9e4c0906d19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3295,7 +3300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2790043407780945481, guid: ad08e57f013358944b847d0242663b61, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2790043407780945481, guid: ad08e57f013358944b847d0242663b61, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3372,6 +3377,18 @@ PrefabInstance:
       propertyPath: deliveryHouse
       value: 
       objectReference: {fileID: 1507721726}
+    - target: {fileID: 2911597832188653168, guid: 490e3636b4e0807488a5764356693494, type: 3}
+      propertyPath: deliveryHouses.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2911597832188653168, guid: 490e3636b4e0807488a5764356693494, type: 3}
+      propertyPath: deliveryHouses.Array.data[0]
+      value: 
+      objectReference: {fileID: 1507721726}
+    - target: {fileID: 2911597832188653168, guid: 490e3636b4e0807488a5764356693494, type: 3}
+      propertyPath: deliveryHouses.Array.data[1]
+      value: 
+      objectReference: {fileID: 1135293696}
     - target: {fileID: 2911597832188653171, guid: 490e3636b4e0807488a5764356693494, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
