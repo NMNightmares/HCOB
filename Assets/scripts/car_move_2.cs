@@ -5,15 +5,15 @@ using UnityEngine;
 public class car_move_2 : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float baseMaxSpeed = 50f;
-    [SerializeField] private float maxSpeed = 50f;
-    [SerializeField] private float maxReverseSpeed = 25f; // Slower reverse speed
+    [SerializeField] private float baseMaxSpeed = 10f;
+    [SerializeField] private float maxSpeed = 10f;
+    [SerializeField] private float maxReverseSpeed = 5f; // Slower reverse speed
     [SerializeField] private float steeringSpeed = 150f;
     [SerializeField] private float deceleration = 10f;
-    [SerializeField] private float dragAmount = 0.1f;
+    [SerializeField] private float dragAmount = 0.5f;
     [SerializeField] private float tireGrip = 0.95f;
     [SerializeField] private float accelerationForce = 20f;
-    [SerializeField] private float reverseAccelerationForce = 12f; // Weaker reverse acceleration
+    [SerializeField] private float reverseAccelerationForce = 5f; // Weaker reverse acceleration
     [SerializeField] private float directionChangeResistance = 8f; // Resistance when changing direction
     
     private float steeringInput;
