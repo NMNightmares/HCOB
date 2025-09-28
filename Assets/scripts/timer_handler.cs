@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class timer_handler : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class timer_handler : MonoBehaviour
     private void OnTimerEnd()
     {
         Debug.Log("Timer Finished!");
+        SceneManager.LoadScene("MainMenu"); 
     }
     
 }
