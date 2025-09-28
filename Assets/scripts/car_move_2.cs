@@ -7,14 +7,16 @@ public class car_move_2 : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float baseMaxSpeed = 10f;
     [SerializeField] private float maxSpeed = 10f;
-    [SerializeField] private float maxReverseSpeed = 5f; // Slower reverse speed
-    [SerializeField] private float steeringSpeed = 150f;
-    [SerializeField] private float deceleration = 10f;
+    [SerializeField] private float maxReverseSpeed = 10f;
+    [SerializeField] private float steeringSpeed = 200f;
+    [SerializeField] private float deceleration = 5f;
     [SerializeField] private float dragAmount = 0.5f;
     [SerializeField] private float tireGrip = 0.95f;
-    [SerializeField] private float accelerationForce = 20f;
-    [SerializeField] private float reverseAccelerationForce = 5f; // Weaker reverse acceleration
-    [SerializeField] private float directionChangeResistance = 8f; // Resistance when changing direction
+    [SerializeField] private float accelerationForce = 10f;
+    [SerializeField] private float reverseAccelerationForce = 10f; 
+    [SerializeField] private float directionChangeResistance = 8f;
+    [SerializeField] private float baseAccelerationForce = 10f;
+    [SerializeField] private float baseReverseAccelerationForce = 10f;
     
     private float steeringInput;
     private float accelerationInput;
@@ -192,15 +194,26 @@ public class car_move_2 : MonoBehaviour
         speedBoostCoroutine = StartCoroutine(SpeedBoostCoroutine(multiplier, duration));
         Debug.Log($"🌶️ Speed boost applied! Multiplier: {multiplier}x for {duration} seconds");
     }
-    
+
     private IEnumerator SpeedBoostCoroutine(float multiplier, float duration)
     {
-        maxSpeed = baseMaxSpeed * multiplier;  // Apply the boost
-        maxReverseSpeed = (baseMaxSpeed * 0.5f) * multiplier; // Reverse speed scales too but stays proportionally slower
-        yield return new WaitForSeconds(duration);  // Wait for duration
-        maxSpeed = baseMaxSpeed;  // Reset to normal speed
-        maxReverseSpeed = baseMaxSpeed * 0.5f; // Reset reverse speed
-        speedBoostCoroutine = null;  // Clear the reference
+        // Apply the boost to speeds
+        maxSpeed = baseMaxSpeed * multiplier;
+        maxReverseSpeed = (baseMaxSpeed * 0.5f) * multiplier;
+    
+        // Apply the boost to acceleration forces
+        accelerationForce = baseAccelerationForce * multiplier;
+        reverseAccelerationForce = baseReverseAccelerationForce * multiplier;
+    
+        yield return new WaitForSeconds(duration);
+    
+        // Reset to normal values
+        maxSpeed = baseMaxSpeed;
+        maxReverseSpeed = baseMaxSpeed * 0.5f;
+        accelerationForce = baseAccelerationForce;
+        reverseAccelerationForce = baseReverseAccelerationForce;
+    
+        speedBoostCoroutine = null;
     }
     
     // Boolean for UI

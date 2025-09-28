@@ -7,7 +7,7 @@ public class hot_sauce : MonoBehaviour
 
     [Header("Hot Sauce Boost Settings")]
     [SerializeField] private float speedMultiplier = 2f;
-    [SerializeField] private float boostDuration = 5f;
+    [SerializeField] private float boostDuration = 10f;
 
     [Header("Visual Effects")]
     [SerializeField] private ParticleSystem spiceEffect;
@@ -46,7 +46,8 @@ public class hot_sauce : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        car_move car = other.GetComponent<car_move>();
+        // Change from car_move to car_move_2
+        car_move_2 car = other.GetComponent<car_move_2>();
 
         if (car != null)
         {
