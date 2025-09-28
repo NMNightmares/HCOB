@@ -118,7 +118,7 @@ MonoBehaviour:
   boostDuration: 5
   spiceEffect: {fileID: 0}
   sipSound: {fileID: 0}
-  hotSauceGlow: {r: 0.8773585, g: 0.12829298, b: 0.12829298, a: 1}
+  hotSauceGlow: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 1}
   bobSpeed: 2
   bobHeight: 0.3
   rotationSpeed: 30

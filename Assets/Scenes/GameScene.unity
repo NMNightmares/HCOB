@@ -367,12 +367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbeed842a05a9d544990958e4d5e6e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chickenShop: {fileID: 1982934305}
-  deliveryHouse: {fileID: 1507721726}
-  chickenOrder: {fileID: 0}
-  car: {fileID: 1387483322}
-  questText: {fileID: 1304738725}
-  deliveryDistance: 1
 --- !u!114 &249566923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2293,6 +2287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1431661441}
   - component: {fileID: 1431661440}
+  - component: {fileID: 1431661442}
   m_Layer: 0
   m_Name: HotSauceSpawner
   m_TagString: Untagged
@@ -2327,6 +2322,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1431661442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1431661439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b9520389400f348ac3a48b03c0bf7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hotSauceBottlePrefab: {fileID: 3107981054358192665, guid: e503efcffaefc8441b36d06a1e4f86f6, type: 3}
+  carTransform: {fileID: 0}
+  spawnInterval: 5
+  maxBottles: 2
+  spawnDistance: 10
 --- !u!1 &1453943941
 GameObject:
   m_ObjectHideFlags: 0
